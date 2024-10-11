@@ -9,15 +9,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PatientFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
-        return [
-            //
-        ];
-    }
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  public function definition(): array
+  {
+    return [
+      'name' => fake()->name(),
+      'insurance' => fake()->boolean(),
+      'email' => fake()->unique()->safeEmail(),
+      'phone_number' => fake()->phoneNumber(),
+      'doctor_id' => fake()->numberBetween(1, 10),
+    ];
+  }
 }
