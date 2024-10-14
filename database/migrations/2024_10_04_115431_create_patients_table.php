@@ -17,7 +17,7 @@ class CreatePatientsTable extends Migration
       $table->id();
       $table->string('name');
       $table->string('insurance')->nullable();
-      $table->string('email')->unique();
+      $table->string('email');
       $table->string('phone_number')->nullable();
       $table->unsignedBigInteger('doctor_id');
       $table->timestamps();

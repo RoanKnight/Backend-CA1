@@ -7,34 +7,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'at',
-        'cost',
-        'paid',
-        'patient_id',
-        'doctor_id',
-    ];
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array<int, string>
+   */
+  protected $fillable = [
+    'at',
+    'cost',
+    'paid',
+    'patient_id',
+    'doctor_id',
+  ];
 
-    /**
-     * Get the patient that owns the appointment.
-     */
-    public function patient()
-    {
-        return $this->belongsTo(Patient::class);
-    }
+  /**
+   * Get the patient that owns the appointment.
+   */
+  public function patient()
+  {
+    return $this->belongsTo(Patient::class);
+  }
 
-    /**
-     * Get the doctor that owns the appointment.
-     */
-    public function doctor()
-    {
-        return $this->belongsTo(Doctor::class);
-    }
+  /**
+   * Get the doctor that owns the appointment.
+   */
+  public function doctor()
+  {
+    return $this->belongsTo(Doctor::class);
+  }
 }

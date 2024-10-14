@@ -20,9 +20,12 @@ class AuthController extends BaseController
   {
     $validator = Validator::make($request->all(), [
       'name' => 'required',
-      'email' => 'required|email',
-      'password' => 'required',
+      'email' => 'required|email|unique:users,email',
+      'password' => 'required|min:6',
       'c_password' => 'required|same:password',
+      'phone_number' => 'nullable|string',
+      'address' => 'nullable|string',
+      'role' => 'nullable|string',
     ]);
 
     if ($validator->fails()) {
@@ -31,11 +34,13 @@ class AuthController extends BaseController
 
     $input = $request->all();
     $input['password'] = bcrypt($input['password']);
+    // Sets the default role to Patient if not provided
+    $input['role'] = $input['role'] ?? User::ROLE_PATIENT;
     $user = User::create($input);
     $success['token'] = $user->createToken('MyApp')->plainTextToken;
     $success['name'] = $user->name;
 
-    return $this->sendResponse($success, 'User register successfully.');
+    return $this->sendResponse($success, 'User registered successfully.');
   }
 
   /**
@@ -45,6 +50,15 @@ class AuthController extends BaseController
    */
   public function login(Request $request): JsonResponse
   {
+    $validator = Validator::make($request->all(), [
+      'email' => 'required|email',
+      'password' => 'required'
+    ]);
+
+    if ($validator->fails()) {
+      return $this->sendError('Validation Error.', $validator->errors());
+    }
+
     if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
       $user = Auth::user();
       $success['token'] = $user->createToken('MyApp')->plainTextToken;

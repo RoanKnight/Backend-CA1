@@ -27,10 +27,10 @@ Route::middleware('auth:sanctum')->group(function () {
     return response()->json($response, 404);
   });
 
-  Route::apiResource('products', DoctorController::class)->missing(function (Request $request) {
+  Route::apiResource('doctors', DoctorController::class)->missing(function (Request $request) {
     $response = [
       'success' => false,
-      'message' => 'Product not found.'
+      'message' => 'Doctor not found.'
     ];
 
     return response()->json($response, 404);

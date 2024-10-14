@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Doctor;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Patient>
@@ -17,11 +18,11 @@ class PatientFactory extends Factory
   public function definition(): array
   {
     return [
-      'name' => fake()->name(),
-      'insurance' => fake()->boolean(),
-      'email' => fake()->unique()->safeEmail(),
-      'phone_number' => fake()->phoneNumber(),
-      'doctor_id' => fake()->numberBetween(1, 10),
+      'name' => $this->faker->name(),
+      'insurance' => $this->faker->word(),
+      'email' => $this->faker->unique()->safeEmail(),
+      'phone_number' => $this->faker->phoneNumber(),
+      'doctor_id' => Doctor::factory(),
     ];
   }
 }

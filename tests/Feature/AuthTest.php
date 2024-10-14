@@ -22,6 +22,7 @@ class AuthTest extends TestCase
       'email' => $this->faker->unique()->safeEmail,
       'password' => 'mysecret',
       'c_password' => 'mysecret'
+      // 'role' => 'patient'
     ];
     $response = $this->postJson('/api/register', $user);
 
@@ -41,13 +42,14 @@ class AuthTest extends TestCase
     $name = $response->json('data.name');
 
     $this->assertEquals($success, true);
-    $this->assertEquals($message, 'User register successfully.');
+    $this->assertEquals($message, 'User registered successfully.');
     $this->assertEquals($name, $user['name']);
     $this->assertNotNull($token);
 
     $this->assertDatabaseHas('users', [
       'name' => $user['name'],
-      'email' => $user['email']
+      'email' => $user['email'],
+      'role' => User::ROLE_PATIENT
     ]);
   }
 
@@ -82,10 +84,11 @@ class AuthTest extends TestCase
 
   public function test_user_login(): void
   {
-    $user = User::factory()->create();
+    $password = 'mysecret';
+    $user = User::factory()->create(['password' => bcrypt($password)]);
     $response = $this->postJson('/api/login', [
       'email' => $user->email,
-      'password' => 'mysecret'
+      'password' => $password
     ]);
 
     $response->assertStatus(200);
@@ -97,6 +100,7 @@ class AuthTest extends TestCase
       'message',
       'success'
     ]);
+
     $success = $response->json('success');
     $message = $response->json('message');
     $token = $response->json('data.token');
