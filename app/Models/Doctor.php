@@ -20,7 +20,8 @@ class Doctor extends Model
     'phone_number',
     'email',
     'specialization',
-    'appointment_id'
+    'appointment_id',
+    'user_id',
   ];
 
   /**
@@ -30,5 +31,10 @@ class Doctor extends Model
   public function appointments()
   {
     return $this->hasMany(Appointment::class);
+  }
+
+  public function user()
+  {
+    return $this->belongsTo(User::class);
   }
 }

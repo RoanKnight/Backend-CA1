@@ -13,6 +13,16 @@ class UserSeeder extends Seeder
    */
   public function run(): void
   {
+    // Create a specific user for testing
+    User::create([
+      'name' => 'Test User',
+      'email' => 'test.user@example.com',
+      'password' => bcrypt('password'),
+      'phone_number' => '123-456-7890',
+      'address' => '123 Test St',
+      'role' => User::ROLE_PATIENT
+    ]);
+
     // Total number of users to create
     $totalUsers = 50;
     $doctorPercentage = 0.2;
