@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Patient;
 use App\Http\Resources\PatientResource;
@@ -35,9 +36,12 @@ class PatientController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(string $id)
+  public function show(Patient $patient): JsonResponse
   {
-    //
+    return response()->json([
+      'success' => true,
+      'data' => new PatientResource($patient)
+    ], 200);
   }
 
   /**

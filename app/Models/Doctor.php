@@ -16,11 +16,7 @@ class Doctor extends Model
    */
 
   protected $fillable = [
-    'name',
-    'phone_number',
-    'email',
     'specialization',
-    'appointment_id',
     'user_id',
   ];
 
@@ -31,6 +27,11 @@ class Doctor extends Model
   public function appointments()
   {
     return $this->hasMany(Appointment::class);
+  }
+
+  public function patients()
+  {
+    return $this->hasMany(Patient::class);
   }
 
   public function user()

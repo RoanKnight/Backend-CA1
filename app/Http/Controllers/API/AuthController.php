@@ -14,6 +14,30 @@ use Validator;
 
 class AuthController extends BaseController
 {
+
+  /**
+   * Index api
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function index(): JsonResponse
+  {
+    $users = User::all();
+
+    return response()->json([
+      'success' => true,
+      'data' => AuthResource::collection($users)
+    ], 200);
+  }
+
+  public function show(User $user): JsonResponse
+  {
+    return response()->json([
+      'success' => true,
+      'data' => new AuthResource($user)
+    ], 200);
+  }
+
   /**
    * Register api
    *
@@ -75,22 +99,6 @@ class AuthController extends BaseController
   }
 
   /**
-   * Index api
-   *
-   * @return \Illuminate\Http\JsonResponse
-   */
-  public function index(): JsonResponse
-  {
-    $users = User::all();
-
-    return response()->json([
-      'success' => true,
-      'data' => AuthResource::collection($users)
-    ], 200);
-  }
-
-
-  /**
    * Update user details
    *
    * @param \Illuminate\Http\Request $request
@@ -113,13 +121,6 @@ class AuthController extends BaseController
 
     $user = User::findOrFail($id);
     $user->update($request->only(['name', 'email', 'phone_number', 'address', 'role']));
-
-    // Update role-specific details
-    // if ($user->role === User::ROLE_PATIENT && $user->patient) {
-    //   $user->patient->update($request->only(['name', 'email', 'phone_number']));
-    // } elseif ($user->role === User::ROLE_DOCTOR && $user->doctor) {
-    //   $user->doctor->update($request->only(['name', 'email', 'phone_number']));
-    // }
 
     return response()->json(['success' => new AuthResource($user)], 200);
   }

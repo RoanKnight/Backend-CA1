@@ -19,12 +19,9 @@ class PatientFactory extends Factory
   public function definition(): array
   {
     return [
-      'name' => $this->faker->name(),
       'insurance' => $this->faker->word(),
-      'email' => $this->faker->unique()->safeEmail(),
-      'phone_number' => $this->faker->phoneNumber(),
       'doctor_id' => Doctor::factory(),
-    //   'user_id' => User::factory(),
+      'user_id' => User::factory(),
     ];
   }
 }

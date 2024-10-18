@@ -45,7 +45,28 @@ Route::middleware('auth:sanctum')->group(function () {
     ], 404);
   });
 
-  // Add route for AuthController index method
-  Route::get('users', [AuthController::class, 'index']);
-  Route::put('users/update/{id}', [AuthController::class, 'update']);
+  // Routes for the users table
+  Route::prefix('users')->group(function () {
+    Route::get('/', [AuthController::class, 'index']);
+    Route::get('/{user}', [AuthController::class, 'show']);
+    Route::patch('/{user}', [AuthController::class, 'update']);
+  });
+
+  // Routes for the patients table
+  Route::prefix('patients')->group(function () {
+    Route::get('/', [PatientController::class, 'index']);
+    Route::get('/{patient}', [PatientController::class, 'show']);
+  });
+
+  // Routes for the doctors table
+  Route::prefix('doctors')->group(function () {
+    Route::get('/', [DoctorController::class, 'index']);
+    Route::get('/{doctor}', [DoctorController::class, 'show']);
+  });
+
+  // Routes for the appointments table
+  Route::prefix('appointments')->group(function () {
+    Route::get('/', [AppointmentController::class, 'index']);
+    Route::get('/{appointment}', [AppointmentController::class, 'show']);
+  });
 });

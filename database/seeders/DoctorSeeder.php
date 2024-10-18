@@ -23,10 +23,8 @@ class DoctorSeeder extends Seeder
     // Create a Doctor entry for each user with the doctor role
     foreach ($users as $user) {
       Doctor::factory()->create([
-        'name' => $user->name,
         'specialization' => $faker->word(),
-        'email' => $user->email,
-        'phone_number' => $user->phone_number ?? $faker->phoneNumber(),
+        'user_id' => $user->id,
       ]);
     }
   }

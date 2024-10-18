@@ -30,11 +30,9 @@ class PatientSeeder extends Seeder
       $doctorId = $faker->randomElement($doctorIds);
 
       Patient::factory()->create([
-        'name' => $user->name,
         'insurance' => $faker->word(),
-        'email' => $user->email,
-        'phone_number' => $user->phone_number ?? $faker->phoneNumber(),
         'doctor_id' => $doctorId,
+        'user_id' => $user->id,
       ]);
     }
   }
