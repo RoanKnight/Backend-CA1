@@ -15,6 +15,7 @@ use Validator;
 
 class AuthController extends BaseController
 {
+
   public function index(): JsonResponse
   {
     $users = User::all();

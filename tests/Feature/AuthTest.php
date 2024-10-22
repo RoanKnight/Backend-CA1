@@ -86,7 +86,7 @@ class AuthTest extends TestCase
 
   public function test_index(): void
   {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['role' => User::ROLE_DOCTOR]);
     User::factory()->count(3)->create();
 
     $response = $this->actingAs($user)->getJson('/api/users');

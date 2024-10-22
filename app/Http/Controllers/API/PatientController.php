@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\PatientResource;
 
 class PatientController extends Controller
@@ -47,16 +48,18 @@ class PatientController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request, Patient $patient): JsonResponse
   {
-    //
-  }
+    $validator = Validator::make($request->all(), [
+      'insurance' => 'nullable|string',
+    ]);
 
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(string $id)
-  {
-    //
+    if ($validator->fails()) {
+      return response()->json(['error' => $validator->errors()], 400);
+    }
+
+    $patient->update($request->only(['insurance']));
+
+    return response()->json(['success' => new PatientResource($patient)], 200);
   }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\AppointmentController;
 use App\Http\Controllers\API\DoctorController;
 use App\Http\Controllers\API\PatientController;
+use App\Models\User;
 
 // Authentication routes
 Route::controller(AuthController::class)->group(function () {
@@ -47,7 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
   // Routes for the users table
   Route::prefix('users')->group(function () {
-    Route::get('/', [AuthController::class, 'index']);
+    Route::get('/', [AuthController::class, 'index'])->middleware('check.role:' . User::ROLE_DOCTOR);
     Route::get('/{user}', [AuthController::class, 'show']);
     Route::patch('/{user}', [AuthController::class, 'update']);
     Route::delete('/{user}', [AuthController::class, 'destroy']);
@@ -58,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::prefix('patients')->group(function () {
     Route::get('/', [PatientController::class, 'index']);
     Route::get('/{patient}', [PatientController::class, 'show']);
+    Route::patch('/{patient}', [PatientController::class, 'update']);
   });
 
   // Routes for the doctors table

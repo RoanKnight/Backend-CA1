@@ -16,11 +16,21 @@ class UserSeeder extends Seeder
     // Create a specific user for testing
     User::create([
       'name' => 'Test User',
-      'email' => 'test.user@example.com',
+      'email' => 'user@example.com',
       'password' => bcrypt('password'),
       'phone_number' => '123-456-7890',
-      'address' => '123 Test St',
+      'address' => '123 Main St',
       'role' => User::ROLE_PATIENT,
+    ]);
+
+    // Create a specific user for testing
+    User::create([
+      'name' => 'Test Doctor',
+      'email' => 'doctor@example.com',
+      'password' => bcrypt('password'),
+      'phone_number' => '123-456-7890',
+      'address' => '456 Main St',
+      'role' => User::ROLE_DOCTOR,
     ]);
 
     // Total number of users to create
