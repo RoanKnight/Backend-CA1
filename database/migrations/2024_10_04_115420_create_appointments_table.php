@@ -20,6 +20,7 @@ class CreateAppointmentsTable extends Migration
       $table->boolean('paid')->default(false);
       $table->unsignedBigInteger('patient_id');
       $table->unsignedBigInteger('doctor_id');
+      $table->boolean('deleted')->default(false);
       $table->timestamps();
 
       $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');

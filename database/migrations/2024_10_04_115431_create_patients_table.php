@@ -18,6 +18,7 @@ class CreatePatientsTable extends Migration
       $table->string('insurance')->nullable();
       $table->unsignedBigInteger('doctor_id');
       $table->unsignedBigInteger('user_id');
+      $table->boolean('deleted')->default(false);
       $table->timestamps();
 
       $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade');

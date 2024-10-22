@@ -20,6 +20,7 @@ class Appointment extends Model
     'paid',
     'patient_id',
     'doctor_id',
+    'deleted',
   ];
 
   /**

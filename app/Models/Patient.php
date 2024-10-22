@@ -18,6 +18,7 @@ class Patient extends Model
     'insurance',
     'user_id',
     'doctor_id',
+    'deleted',
   ];
 
   /**

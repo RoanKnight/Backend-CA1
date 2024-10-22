@@ -50,6 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/', [AuthController::class, 'index']);
     Route::get('/{user}', [AuthController::class, 'show']);
     Route::patch('/{user}', [AuthController::class, 'update']);
+    Route::delete('/{user}', [AuthController::class, 'destroy']);
+    Route::patch('/{user}/restore', [AuthController::class, 'restore']);
   });
 
   // Routes for the patients table

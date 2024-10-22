@@ -19,8 +19,7 @@ class DoctorResource extends JsonResource
       'specialization' => $this->specialization,
       'appointment_id' => $this->appointment_id,
       'user_id' => $this->user_id,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'deleted' => $this->deleted,
     ];
   }
 }

@@ -7,19 +7,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\User;
-use App\Models\Patient;
 use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Appointment;
 use App\Http\Resources\AuthResource;
 use Validator;
 
 class AuthController extends BaseController
 {
-
-  /**
-   * Index api
-   *
-   * @return \Illuminate\Http\JsonResponse
-   */
   public function index(): JsonResponse
   {
     $users = User::all();
@@ -38,12 +33,6 @@ class AuthController extends BaseController
     ], 200);
   }
 
-  /**
-   * Register api
-   *
-   * @param \Illuminate\Http\Request $request
-   * @return \Illuminate\Http\JsonResponse
-   */
   public function register(Request $request): JsonResponse
   {
     $validator = Validator::make($request->all(), [
@@ -70,12 +59,6 @@ class AuthController extends BaseController
     return response()->json(['success' => $success], 200);
   }
 
-  /**
-   * Login api
-   *
-   * @param \Illuminate\Http\Request $request
-   * @return \Illuminate\Http\JsonResponse
-   */
   public function login(Request $request): JsonResponse
   {
     $validator = Validator::make($request->all(), [
@@ -98,18 +81,11 @@ class AuthController extends BaseController
     }
   }
 
-  /**
-   * Update user details
-   *
-   * @param \Illuminate\Http\Request $request
-   * @param int $id
-   * @return \Illuminate\Http\JsonResponse
-   */
-  public function update(Request $request, int $id): JsonResponse
+  public function update(Request $request, User $user): JsonResponse
   {
     $validator = Validator::make($request->all(), [
       'name' => 'required|string',
-      'email' => 'required|email|unique:users,email,' . $id,
+      'email' => 'required|email|unique:users,email,' . $user->id,
       'phone_number' => 'nullable|string',
       'address' => 'nullable|string',
       'role' => 'nullable|string|in:' . User::ROLE_PATIENT . ',' . User::ROLE_DOCTOR,
@@ -119,9 +95,45 @@ class AuthController extends BaseController
       return response()->json(['error' => $validator->errors()], 400);
     }
 
-    $user = User::findOrFail($id);
     $user->update($request->only(['name', 'email', 'phone_number', 'address', 'role']));
 
     return response()->json(['success' => new AuthResource($user)], 200);
+  }
+
+  public function destroy(User $user): JsonResponse
+  {
+    $this->updateDeletedStatus($user, true);
+
+    return response()->json(['success' => 'User deleted successfully'], 200);
+  }
+
+  public function restore(User $user): JsonResponse
+  {
+    $this->updateDeletedStatus($user, false);
+
+    return response()->json(['success' => 'User restored successfully'], 200);
+  }
+
+  private function updateDeletedStatus(User $user, bool $status): void
+  {
+    // Update the deleted status for the user
+    $user->update(['deleted' => $status]);
+
+    // Check the role of the user and update the corresponding records
+    if ($user->role === User::ROLE_DOCTOR) {
+      $doctor = Doctor::where('user_id', $user->id)->first();
+      if ($doctor) {
+        $doctor->update(['deleted' => $status]);
+        // Update the deleted status for all appointments related to the doctor
+        Appointment::where('doctor_id', $doctor->id)->update(['deleted' => $status]);
+      }
+    } elseif ($user->role === User::ROLE_PATIENT) {
+      $patient = Patient::where('user_id', $user->id)->first();
+      if ($patient) {
+        $patient->update(['deleted' => $status]);
+        // Update the deleted status for all appointments related to the patient
+        Appointment::where('patient_id', $patient->id)->update(['deleted' => $status]);
+      }
+    }
   }
 }

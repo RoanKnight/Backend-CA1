@@ -17,6 +17,7 @@ class CreateDoctorsTable extends Migration
       $table->id();
       $table->string('specialization');
       $table->unsignedBigInteger('user_id');
+      $table->boolean('deleted')->default(false);
       $table->timestamps();
 
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
       'password' => bcrypt('password'),
       'phone_number' => '123-456-7890',
       'address' => '123 Test St',
-      'role' => User::ROLE_PATIENT
+      'role' => User::ROLE_PATIENT,
     ]);
 
     // Total number of users to create

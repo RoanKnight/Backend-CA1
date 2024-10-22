@@ -19,8 +19,7 @@ class PatientResource extends JsonResource
       'insurance' => $this->insurance,
       'doctor_id' => $this->doctor_id,
       'user_id' => $this->user_id,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'deleted' => $this->deleted,
     ];
   }
 }
