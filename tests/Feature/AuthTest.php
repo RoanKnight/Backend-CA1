@@ -167,7 +167,7 @@ class AuthTest extends TestCase
     $admin = User::factory()->create();
     $user = User::factory()->create(['role' => User::ROLE_PATIENT]);
     $patient = Patient::factory()->create(['user_id' => $user->id]);
-    $appointment = Appointment::factory()->create(['doctor_id' => 1, 'patient_id' => $patient->id]); // Assuming doctor_id 1 exists
+    $appointment = Appointment::factory()->create(['doctor_id' => 1, 'patient_id' => $patient->id]);
 
     $response = $this->actingAs($admin)->deleteJson('/api/users/' . $user->id);
 
@@ -184,7 +184,7 @@ class AuthTest extends TestCase
     $admin = User::factory()->create();
     $user = User::factory()->create(['role' => User::ROLE_PATIENT, 'deleted' => true]);
     $patient = Patient::factory()->create(['user_id' => $user->id, 'deleted' => true]);
-    $appointment = Appointment::factory()->create(['doctor_id' => 1, 'patient_id' => $patient->id, 'deleted' => true]); // Assuming doctor_id 1 exists
+    $appointment = Appointment::factory()->create(['doctor_id' => 1, 'patient_id' => $patient->id, 'deleted' => true]);
 
     $response = $this->actingAs($admin)->patchJson('/api/users/' . $user->id . '/restore');
 

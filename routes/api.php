@@ -57,20 +57,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
   // Routes for the patients table
   Route::prefix('patients')->group(function () {
-    Route::get('/', [PatientController::class, 'index']);
+    Route::get('/', [PatientController::class, 'index'])->middleware('check.role:' . User::ROLE_DOCTOR);
     Route::get('/{patient}', [PatientController::class, 'show']);
     Route::patch('/{patient}', [PatientController::class, 'update']);
   });
 
   // Routes for the doctors table
   Route::prefix('doctors')->group(function () {
-    Route::get('/', [DoctorController::class, 'index']);
+    Route::get('/', [DoctorController::class, 'index'])->middleware('check.role:' . User::ROLE_DOCTOR);
     Route::get('/{doctor}', [DoctorController::class, 'show']);
+    Route::patch('/{doctor}', [DoctorController::class, 'update']);
   });
 
   // Routes for the appointments table
   Route::prefix('appointments')->group(function () {
-    Route::get('/', [AppointmentController::class, 'index']);
+    Route::get('/', [AppointmentController::class, 'index'])->middleware('check.role:' . User::ROLE_DOCTOR);
     Route::get('/{appointment}', [AppointmentController::class, 'show']);
   });
 });

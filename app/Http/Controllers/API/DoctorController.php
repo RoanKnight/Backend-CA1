@@ -7,6 +7,7 @@ use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DoctorController extends Controller
 {
@@ -26,14 +27,6 @@ class DoctorController extends Controller
   }
 
   /**
-   * Store a newly created resource in storage.
-   */
-  public function store(Request $request)
-  {
-    //
-  }
-
-  /**
    * Display the specified resource.
    */
   public function show(Doctor $doctor): JsonResponse
@@ -47,9 +40,19 @@ class DoctorController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request, Doctor $doctor): JsonResponse
   {
-    //
+    $validator = Validator::make($request->all(), [
+      'insurance' => 'nullable|string',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['error' => $validator->errors()], 400);
+    }
+
+    $doctor->update($request->only(['specialization']));
+
+    return response()->json(['success' => new DoctorResource($doctor)], 200);
   }
 
   /**

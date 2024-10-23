@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 return new class extends Migration {
   /**
@@ -18,7 +19,7 @@ return new class extends Migration {
       $table->string('address')->nullable();
       $table->timestamp('email_verified_at')->nullable();
       $table->string('password');
-      $table->string('role');
+      $table->string('role')->default(USER::ROLE_PATIENT);
       $table->boolean('deleted')->default(false);
       $table->rememberToken();
       $table->timestamps();

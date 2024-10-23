@@ -54,6 +54,7 @@ class AuthController extends BaseController
     $input['password'] = bcrypt($input['password']);
     $input['role'] = $input['role'] ?? User::ROLE_PATIENT;
     $user = User::create($input);
+
     $success['token'] = $user->createToken('MyApp')->plainTextToken;
     $success['user'] = new AuthResource($user);
 
